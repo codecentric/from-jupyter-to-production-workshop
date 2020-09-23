@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  jupyter:
+    image: "ws_data_production"
+    build: ../from-jupyter-to-production-image
+    ports:
+      - 8888:8888
+    volumes:
+      - type: bind
+        source: ./notebooks
+        target: /workshop/notebooks
