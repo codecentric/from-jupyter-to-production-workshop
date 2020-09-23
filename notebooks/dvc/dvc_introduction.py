@@ -1,30 +1,27 @@
 import fire
-import json
 import keras
-from keras.models import load_model
 import pickle
 import tensorflow as tf
 from tensorflow.python.saved_model import signature_constants
 from tensorflow.python.saved_model import tag_constants
 from tensorflow.python.saved_model import builder
-import os
 
 
 def configure(outpath):
     generator = keras.preprocessing.image.ImageDataGenerator(rescale=1. / 255)
     with open(outpath, "wb") as f:
         pickle.dump(generator, f)
-        
-        
-def build_generator(config_path, 
-                    dataset_path, 
+
+
+def build_generator(config_path,
+                    dataset_path,
                     data_set_type,
                     img_height=100, img_width=100):
     with open(config_path, "rb") as f:
         generator = pickle.load(f)
     path = "%s/%s" % (dataset_path, data_set_type)
     return generator.flow_from_directory(path,
-                                         target_size=(img_height, 
+                                         target_size=(img_height,
                                                       img_width),
                                          color_mode='rgb')
 
@@ -32,7 +29,7 @@ def build_generator(config_path,
 def define_model(input_shape, num_classes):
     model = keras.models.Sequential()
     model.add(
-    keras.layers.Conv2D(filters=4, kernel_size=(2, 2), strides=1, activation='relu', input_shape=input_shape))
+        keras.layers.Conv2D(filters=4, kernel_size=(2, 2), strides=1, activation='relu', input_shape=input_shape))
     model.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
     model.add(keras.layers.Conv2D(filters=4, kernel_size=(2, 2), strides=1, activation='relu'))
     model.add(keras.layers.BatchNormalization())
@@ -46,7 +43,7 @@ def define_model(input_shape, num_classes):
                   optimizer=keras.optimizers.Adadelta(),
                   metrics=['accuracy'])
     return model
-    
+
 
 def train_model(dataset_path, config_path, out_path, training_set="Training", epochs=2):
     dataset = dataset_path
@@ -61,8 +58,8 @@ def train_model(dataset_path, config_path, out_path, training_set="Training", ep
                         epochs=epochs,
                         verbose=0)
     model.save(out_path)
-        
-        
+
+
 def export(model_path, out_path):
     model_path = model_path
     model = keras.models.load_model(model_path)
@@ -85,7 +82,7 @@ def export(model_path, out_path):
             }
         )
     tf_builder.save()
-    
-        
+
+
 if __name__ == '__main__':
-  fire.Fire()
+    fire.Fire()

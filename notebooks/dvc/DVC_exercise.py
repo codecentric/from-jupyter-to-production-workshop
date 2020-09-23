@@ -1,7 +1,7 @@
 import cv2
 import json
-
 import fire
+
 
 def preprocess(inpath, outpath):
     img = cv2.imread(inpath, cv2.IMREAD_COLOR)
@@ -24,4 +24,4 @@ def classify(inpath, outpath):
 
 
 if __name__ == '__main__':
-  fire.Fire()
+    fire.Fire()
