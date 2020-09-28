@@ -1,0 +1,5 @@
+output_dir: .
+project_name: Workflow Tutorial
+repo_name: workflow-tutorial
+python_package: workflow_tutorial
+include_example: false
