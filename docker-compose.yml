@@ -5,6 +5,8 @@ services:
     build: ../from-jupyter-to-production-image
     ports:
       - 8888:8888
+      - 4141:4141
+      - 5000:5000
     volumes:
       - type: bind
         source: ./notebooks
