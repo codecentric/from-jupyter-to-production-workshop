@@ -7,6 +7,7 @@ services:
       - 8888:8888
       - 4141:4141
       - 5000:5000
+      - 8080:8080
     volumes:
       - type: bind
         source: ./notebooks
