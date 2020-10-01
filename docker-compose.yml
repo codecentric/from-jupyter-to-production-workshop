@@ -2,13 +2,24 @@ version: '3.7'
 services:
   jupyter:
     image: "ws_data_production"
-    build: ../from-jupyter-to-production-image
+    build: ../from-jupyter-to-production-baseimage
     ports:
       - 8888:8888
       - 4141:4141
       - 5000:5000
-      - 8080:8080
     volumes:
       - type: bind
         source: ./notebooks
         target: /workshop/notebooks
+  airflow:
+    image: "airflow"
+    build: ../from-jupyter-to-production-airflow-image
+    ports:
+      - 8080:8080
+    volumes:
+      - type: bind
+        source: ./notebooks/airflow/dags
+        target: /usr/local/airflow/dags
+      - type: bind
+        source: ./notebooks/airflow/exercise-dataset-airflow
+        target: /exercise-dataset-airflow
