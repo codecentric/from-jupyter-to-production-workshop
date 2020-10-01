@@ -34,4 +34,37 @@ def predict_img(**kwargs):
     with open(prediction_file, "w") as out:
         json.dump({"class": label}, out)
 
-# TODO: INSERT YOUR CODE HERE
+
+default_args = {
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'start_date': days_ago(2),
+}
+
+dag = DAG(
+    dag_id='file_processing',
+    default_args=default_args,
+    schedule_interval=timedelta(days=1),
+)
+
+# operator that executes the preprocess_img function
+preprocess = PythonOperator(
+    task_id="preprocess",
+    python_callable=preprocess_img,
+    provide_context=True,
+    dag=dag,
+)
+
+# operator that executes the predict function
+predict = PythonOperator(
+    task_id="predict",
+    python_callable=predict_img,
+    provide_context=True,
+    dag=dag,
+)
+
+# connect our pipeline steps
+preprocess >> predict
+
+# Test via backfilling..
+# airflow backfill file_processing -s 2020-09-13 -e 2020-09-16
