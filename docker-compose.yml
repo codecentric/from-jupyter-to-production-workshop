@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 services:
   jupyter:
     image: radtkem/from-jupyter-to-production-baseimage:latest
@@ -6,6 +6,7 @@ services:
       - 8888:8888
       - 4141:4141
       - 5000:5000
+      - 7777:7777
     volumes:
       - type: bind
         source: ./notebooks
