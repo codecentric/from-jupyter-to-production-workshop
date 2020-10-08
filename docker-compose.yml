@@ -10,6 +10,7 @@ services:
       - type: bind
         source: ./notebooks
         target: /workshop/notebooks
+      - workspace:/workshop/workspace
   airflow:
     image: radtkem/from-jupyter-to-production-airflow-image:latest
     ports:
@@ -21,3 +22,6 @@ services:
       - type: bind
         source: ./notebooks/airflow/exercise-dataset-airflow
         target: /exercise-dataset-airflow
+      - workspace:/workshop/workspace
+volumes:
+  workspace:
