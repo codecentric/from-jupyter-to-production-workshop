@@ -9,9 +9,9 @@ directory, you will learn how to
 
 * Versioning your data and models with DVC
 * Build pipelines with Kedro
-* Track Experiments with MLflow
+* Track experiments with MLflow
 * Deploy your model with FastAPI
-* Orchestration with Airflow
+* Orchestrate workflow with Airflow
 
 Having installed docker and docker-compose, you can use JupyterLab for the exercises. 
 ## Start JupyterLab
