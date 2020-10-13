@@ -43,4 +43,29 @@ task3 = BashOperator(
     dag=dag,
 )
 
+def foo():
+    x = "hello world"
+    return x
+
+
+def bar(**context):
+    x = context["task_instance"].xcom_pull(task_ids="task4")
+    print(x)
+
+
+task4 = PythonOperator(
+    task_id="task4",
+    python_callable=foo,
+    dag=dag,
+)
+
+task5 = PythonOperator(
+    task_id="task5",
+    python_callable=bar,
+    provide_context=True,
+    dag=dag,
+)
+
+task4 >> task5
+
 task1 >> task2 >> task3
