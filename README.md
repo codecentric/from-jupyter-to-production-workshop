@@ -36,6 +36,4 @@ docker pull radtkem/from-jupyter-to-production-airflow-image
 
 ### Data Sources
 
-https://www.kaggle.com/moltean/fruits
-
 https://archive.ics.uci.edu/ml/datasets/wine+quality
