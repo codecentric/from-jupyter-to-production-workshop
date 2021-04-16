@@ -29,10 +29,17 @@ You can now use JupyterLab in your browser: [http://localhost:8888](http://local
 The Airlow UI can be accessed via: [http://localhost:8080](http://localhost:8080)
 
 ### Docker Images
+If you want to pull the docker images separately
+
 ```bash
-docker pull radtkem/from-jupyter-to-production-baseimage
-docker pull radtkem/from-jupyter-to-production-airflow-image
+docker pull codecentric/from-jupyter-to-production-baseimage
+docker pull codecentric/from-jupyter-to-production-airflow-image
 ```
+
+You will find the source for the docker images here:
+
+[http://github.com/codecentric/from-jupyter-to-production-baseimage](http://github.com/codecentric/from-jupyter-to-production-baseimage)
+[http://github.com/codecentric/from-jupyter-to-production-airflow-image](http://github.com/codecentric/from-jupyter-to-production-airflow-image)
 
 ### Data Sources
 

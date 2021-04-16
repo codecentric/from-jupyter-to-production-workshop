@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   jupyter:
-    image: radtkem/from-jupyter-to-production-baseimage:latest
+    image: codecentric/from-jupyter-to-production-baseimage:latest
     ports:
       - 8888:8888
       - 4141:4141
@@ -13,7 +13,7 @@ services:
         target: /workshop/notebooks
       - workspace:/workshop/workspace
   airflow:
-    image: radtkem/from-jupyter-to-production-airflow-image:latest
+    image: codecentric/from-jupyter-to-production-airflow-image:latest
     ports:
       - 8080:8080
     volumes:
