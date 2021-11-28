@@ -1,20 +1,27 @@
-import uvicorn
-from fastapi import FastAPI
-from fastapi import APIRouter
-
-
-api = APIRouter()
-from pydantic import BaseModel
-
 import numpy as np
 import onnxruntime as rt
+import uvicorn
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+api = FastAPI()
 
 sess = rt.InferenceSession("model/loan_model.onnx")
 
-numeric_features = ['applicantincome', 'coapplicantincome', 'loanamount',
-       'loan_amount_term', 'credit_history']
-categorical_features = ['married', 'dependents', 'education',
-       'self_employed', 'property_area']
+numeric_features = [
+    "applicantincome",
+    "coapplicantincome",
+    "loanamount",
+    "loan_amount_term",
+    "credit_history",
+]
+categorical_features = [
+    "married",
+    "dependents",
+    "education",
+    "self_employed",
+    "property_area",
+]
 
 class LoanFeatures(BaseModel):
     married: str
@@ -36,7 +43,7 @@ class PredictionResult(BaseModel):
     predicted: list
 
 def predict(features: LoanFeatures) -> PredictionResult:
-    ins = { k: np.array(v) for k,v in features.dict().items() } 
+    ins = {k: np.array(v) for k,v in features.dict().items()} 
     for c in numeric_features:
         ins[c] = ins[c].astype(np.float32).reshape((1, 1))
     for k in categorical_features:
@@ -48,11 +55,5 @@ def predict(features: LoanFeatures) -> PredictionResult:
     return PredictionResult(predicted=predicted)
 
 @api.post("/predict", response_model=PredictionResult)
-def post_predict(
-    loan_features: LoanFeatures,
-):
+def post_predict(loan_features: LoanFeatures):
     return predict(loan_features)
-
-app = FastAPI()
-
-app.include_router(api)
