@@ -24,5 +24,8 @@ services:
         source: ./notebooks/airflow/exercise-dataset-airflow
         target: /exercise-dataset-airflow
       - workspace:/workshop/workspace
+    environment:
+      - AIRFLOW__SCHEDULER__DAG_DIR_LIST_INTERVAL=60
+      - AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL=0
 volumes:
   workspace:
