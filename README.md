@@ -1,4 +1,5 @@
 # From Jupyter to Production
+
 ## Production-ready Data Science Projects
 
 This repository contains material for the workshop "From Jupyter to Production".
@@ -7,39 +8,41 @@ The goal of the workshop is to get a glimpse of production-readiness for data sc
 With the introductory Jupyter notebooks and the exercises found in the [notebooks](https://github.com/codecentric/from-jupyter-to-production-workshop/tree/master/notebooks)
 directory, you will learn how to
 
-* Versioning your data and models with DVC
-* Build pipelines with Kedro
-* Track experiments with MLflow
-* Deploy your model with FastAPI
-* Orchestrate workflow with Airflow
+- Versioning your data and models with DVC
+- Build pipelines with Dagster
+- Track experiments with MLflow
+- Deploy your model with FastAPI
 
-Having installed docker and docker-compose, you can use JupyterLab for the exercises. 
+Having installed docker, you can use JupyterLab for the exercises.
+
 ## Start JupyterLab
+
 First clone the repository
+
 ```bash
 git clone https://github.com/codecentric/from-jupyter-to-production-workshop
 cd from-jupyter-to-production-workshop
 ```
+
 and then execute the command
+
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
+
 You can now use JupyterLab in your browser: [http://localhost:8888](http://localhost:8888)
 
-The Airlow UI can be accessed via: [http://localhost:8080](http://localhost:8080)
-
 ### Docker Images
+
 If you want to pull the docker images separately
 
 ```bash
 docker pull codecentric/from-jupyter-to-production-baseimage
-docker pull codecentric/from-jupyter-to-production-airflow-image
 ```
 
 You will find the source for the docker images here:
 
 [http://github.com/codecentric/from-jupyter-to-production-baseimage](http://github.com/codecentric/from-jupyter-to-production-baseimage)
-[http://github.com/codecentric/from-jupyter-to-production-airflow-image](http://github.com/codecentric/from-jupyter-to-production-airflow-image)
 
 ### Data Sources
 
