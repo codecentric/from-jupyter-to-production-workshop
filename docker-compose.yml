@@ -1,16 +1,32 @@
 version: "3.7"
 services:
   jupyter:
-    image: codecentric/from-jupyter-to-production-baseimage:latest
+    image: codecentric/from-jupyter-to-production-jupyter:latest
     ports:
       - 8888:8888
       - 4141:4141
-      - 5001:5001
       - 7777:7777
     volumes:
       - type: bind
         source: ./notebooks
         target: /workshop/notebooks
       - workspace:/workshop/workspace
+    links:
+      - "mlflow:mlflow"
+  dagster:
+    image: codecentric/from-jupyter-to-production-dagster:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - type: bind
+        source: ./notebooks/dagster/scripts
+        target: /opt/dagster/code
+      - workspace:/workshop/workspace
+  mlflow:
+    image: codecentric/from-jupyter-to-production-mlflow:latest
+    ports:
+      - 5001:5001
+    volumes:
+      - workspace:/ml_data/mlruns
 volumes:
   workspace:
