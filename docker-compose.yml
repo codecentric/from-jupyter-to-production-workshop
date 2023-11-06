@@ -13,15 +13,6 @@ services:
       - workspace:/workshop/workspace
     links:
       - "mlflow:mlflow"
-  dagster:
-    image: codecentric/from-jupyter-to-production-dagster:latest
-    ports:
-      - 3000:3000
-    volumes:
-      - type: bind
-        source: ./notebooks/dagster/scripts
-        target: /opt/dagster/code
-      - workspace:/workshop/workspace
   mlflow:
     image: codecentric/from-jupyter-to-production-mlflow:latest
     ports:
