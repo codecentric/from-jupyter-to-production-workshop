@@ -3,6 +3,7 @@ services:
   jupyter:
     image: codecentric/from-jupyter-to-production-jupyter:latest
     ports:
+      - 3000:3000
       - 8888:8888
       - 4141:4141
       - 7777:7777
