@@ -1,5 +1,4 @@
 import logging
-from typing import Dict
 
 import yaml
 import numpy as np
@@ -12,7 +11,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 import mlflow.sklearn
 
-PATH = 'data/'
+PATH = 'notebooks/dagster/data/'
 
 
 def download_data(url: str, path: str):
@@ -45,7 +44,7 @@ def split_data(data: pd.DataFrame):
 
 
 def load_params():
-    with open('params.yaml', 'r') as fd:
+    with open('notebooks/dagster/params.yaml', 'r') as fd:
         params = yaml.safe_load(fd)
     return params
 

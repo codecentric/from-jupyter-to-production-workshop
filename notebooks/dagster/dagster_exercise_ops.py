@@ -11,7 +11,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 import mlflow.sklearn
 
-PATH = 'data/'
+PATH = 'notebooks/dagster/data/'
 
 
 def download_data(url: str, path: str):
@@ -48,7 +48,7 @@ def train_model(x_train_path: str, y_train_path: str):
     x_train = pd.read_csv(x_train_path)
     y_train = pd.read_csv(y_train_path)
 
-    with open('params.yaml', 'r') as fd:
+    with open('notebooks/dagster/params.yaml', 'r') as fd:
         params = yaml.safe_load(fd)
 
     pipe = Pipeline([('scaler', StandardScaler()),
