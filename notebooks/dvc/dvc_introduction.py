@@ -1,6 +1,5 @@
 import logging
 
-import fire
 import yaml
 import numpy as np
 import pandas as pd
@@ -75,7 +74,3 @@ def evaluate_model(model_path: str, x_test_path: str, y_test_path: str):
                                      "r2": float(r2)}})
 
     result.to_json(PATH + 'result.json')
-
-
-if __name__ == '__main__':
-    fire.Fire()

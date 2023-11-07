@@ -1,6 +1,5 @@
 import cv2
 import json
-import fire
 
 
 def preprocess(inpath, outpath):
@@ -21,7 +20,3 @@ def classify(inpath, outpath):
     label = "lemon" if circles is not None else "banana"
     with open(outpath, "w") as out:
         json.dump({"class": label}, out)
-
-
-if __name__ == '__main__':
-    fire.Fire()
