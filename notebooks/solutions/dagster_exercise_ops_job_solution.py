@@ -4,6 +4,7 @@ from notebooks.dagster.dagster_exercise_ops import download_data, split_data, \
     train_model, evaluate_model
 
 
+# This is the first Op. It's in and outputs are already defined.
 @op(
     ins={'path': In(str), 'url': In(str)},
     out={'data_path': Out(str)}
@@ -13,6 +14,7 @@ def download_data_op(context, url: str, path: str):
     return data_path
 
 
+# Define this function as an Op and add it's in and outputs.
 @op(
     ins={'data_path': In(str)},
     out={'x_train_path': Out(str),
@@ -25,6 +27,7 @@ def split_data_op(context, data_path: str):
     return x_train_path, y_train_path, x_test_path, y_test_path
 
 
+# Define this function as an Op and add it's in and outputs.
 @op(
     ins={'x_train_path': In(str), 'y_train_path': In(str)},
     out={'model_path': Out(str)}
@@ -34,13 +37,15 @@ def train_model_op(context, x_train_path: str, y_train_path: str):
     return model_path
 
 
+# Define this function as an Op and add its inputs.
 @op(
-    ins={'model_path': In(str)}
+    ins={'model_path': In(str), 'x_test_path': In(str), 'y_test_path': In(str)}
 )
 def evaluate_model_op(context, model_path: str, x_test_path: str, y_test_path: str):
     evaluate_model(model_path, x_test_path, y_test_path)
 
 
+# Define this function as a job.
 @job
 def data_pipeline():
     data_path = download_data_op()

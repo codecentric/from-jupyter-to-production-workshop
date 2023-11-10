@@ -5,14 +5,12 @@ from notebooks.dagster.dagster_exercise_assets import download_data, split_data,
     train_model, evaluate_model, load_params
 
 
-# This is class contains the default configuration.
-# It can be changed via the dagster ui.
 class DownloadConfig(Config):
     url: str = "http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv"
-    path: str = "data/winequality-red.csv"
+    path: str = "notebooks/dagster/data/winequality-red.csv"
 
 
-# Define this function as an asset.
+# Define this function as an Asset.
 # It should later be referred to as 'data', so rename it.
 def download_data_asset(context: AssetExecutionContext, config: DownloadConfig):
     return download_data(config.url, config.path)
