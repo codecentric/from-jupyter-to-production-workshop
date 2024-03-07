@@ -9,5 +9,6 @@ __pycache__/
 .idea
 
 .DS_Store
+tmp*
 
 notebooks/mlflow/data/
