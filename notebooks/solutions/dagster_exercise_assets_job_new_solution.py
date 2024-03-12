@@ -1,45 +1,28 @@
 import pandas as pd
-from dagster import (
-    asset,
-    AssetOut,
-    multi_asset,
-    Config,
-    Output,
-    define_asset_job,
-    Definitions,
-)
+from dagster import asset, Config, Output, define_asset_job, Definitions, AssetSelection
 from pandas import DataFrame
-from sklearn.model_selection import train_test_split
 
 
+# This is the input data config
 class DataConfig(Config):
     input_file: str = "data/genres_v2.csv"
     url: str = "https://www.kaggle.com/datasets/mrmorj/dataset-of-songs-in-spotify/data"
 
 
-class SplitConfig(Config):
-    test_size: float = 0.2
-    random_state: int = 42
-    shuffle: bool = True
+# This is the first Asset. Give it a proper description and name.
+# Add it to an asset group named 'Data Preprocessing'
+@asset(name="song_data", description="Input Music data", group_name="datapreprocessing")
+def load_data(config: DataConfig) -> DataFrame:
+    # TODO: test download from kaggle
+    # TODO: define as resource?
+    return pd.read_csv(config.input_file)
 
 
-@asset(description="Input Music data")
-def data(config: DataConfig) -> Output[DataFrame]:
-    # TODO: download data instead of load?
-    df = pd.read_csv(config.input_file)
-    return Output(
-        df,
-        metadata={
-            "num_rows": df.shape[0],
-            "num_cols": df.shape[1],
-            "source": config.url,
-        },
-    )
-
-
-@asset(description="Cleaned Music Data")
-def data_cleaned(data: pd.DataFrame):
-    df = data.drop(
+# This is the second Asset. Give it a proper description.
+# Add your chosen name for the first asset as input (replace 'data').
+@asset(description="Cleaned Music Data", group_name="datapreprocessing")
+def data_cleaned(song_data: pd.DataFrame):
+    return song_data.drop(
         [
             "type",
             "id",
@@ -52,28 +35,46 @@ def data_cleaned(data: pd.DataFrame):
         ],
         axis=1,
     )
-    return Output(df, metadata={"num_rows": df.shape[0], "num_cols": df.shape[1]})
 
 
+# This is the third Asset. Give it a proper description.
+# Add two metadata parameter to this Asset, which tracks the number of
+# rows and the number of columns. You need to define the output as
+# a dagster.Output for this.
 @asset(description="Duplicates to remove from Music data")
 def duplicates(data_cleaned: pd.DataFrame):
     df = data_cleaned[data_cleaned.duplicated()]
     return Output(df, metadata={"num_rows": df.shape[0], "num_cols": df.shape[1]})
 
 
-@asset(description="Cleaned Music Data without duplicates")
+# This is the fourth Asset. Give it a proper description.
+# Add two metadata parameter to this Asset, which tracks the number of
+# rows and the number of columns. You need to define the output as
+# a dagster.Output for this.
+@asset(
+    description="Cleaned Music Data without duplicates", group_name="datapreprocessing"
+)
 def data_deduplicated(data_cleaned: pd.DataFrame):
     df = data_cleaned.drop_duplicates(keep="first")
     return Output(df, metadata={"num_rows": df.shape[0], "num_cols": df.shape[1]})
 
 
-@asset(description="Music data with One-Hot-Encoding")
+# This is the fifth Asset. Give it a proper description.
+# Add two metadata parameter to this Asset, which tracks the number of
+# rows and the number of columns. You need to define the output as
+# a dagster.Output for this.
+@asset(description="Music data with One-Hot-Encoding", group_name="datapreprocessing")
 def data_encoded(data_deduplicated: pd.DataFrame):
     df = pd.get_dummies(data_deduplicated, columns=["key"], prefix="key")
     return Output(df, metadata={"num_rows": df.shape[0], "num_cols": df.shape[1]})
 
 
-@asset(description="Standardized Music Data")
+# This is the sixth Asset. Give it a proper description.
+# Add two metadata parameter to this Asset, which tracks the number of
+# rows and the number of columns. You need to define the output as
+# a dagster.Output for this.
+# Additionally, track the standardized columns in as metadata parameters.
+@asset(description="Standardized Music Data", group_name="datapreprocessing")
 def data_standardized(data_encoded: pd.DataFrame):
     pd.set_option("display.max_columns", 500)
     data_encoded.describe()
@@ -83,75 +84,44 @@ def data_standardized(data_encoded: pd.DataFrame):
     data_encoded["tempo"] = (data_encoded["tempo"] - data_encoded["tempo"].min()) / (
         data_encoded["tempo"].max() - data_encoded["tempo"].min()
     )
+    data_encoded.to_csv("data/genres_standardized.csv", sep=";", index=False)
     return Output(
         data_encoded,
-        metadata={"num_rows": data_encoded.shape[0], "num_cols": data_encoded.shape[1]},
+        metadata={
+            "num_rows": data_encoded.shape[0],
+            "num_cols": data_encoded.shape[1],
+            "standardized_cols": ["duration_ms", "tempo"],
+        },
     )
 
 
-@multi_asset(
-    description="Train-Test-Split of Music Data",
-    outs={
-        "x_train": AssetOut(),
-        "x_test": AssetOut(),
-        "y_train": AssetOut(),
-        "y_test": AssetOut(),
-    },
-)
-def split_data(data_standardized: pd.DataFrame, config: SplitConfig):
-    x = data_standardized.drop(["genre"], axis=1)
-    y = data_standardized["genre"]
+# You could start the UI at this point and see the assets you defined.
+# Group all Assets except for 'duplicates' to the same asset group named
+# 'datapreprocessing'.
+# Restart the Dagster UI again and see how the assets are now grouped together.
 
-    xtrain, xtest, ytrain, ytest = train_test_split(
-        x,
-        y,
-        test_size=config.test_size,
-        random_state=config.random_state,
-        shuffle=config.shuffle,
-    )
-    return (
-        Output(
-            xtrain,
-            metadata={
-                "xtrain_num_rows": xtrain.shape[0],
-                "xtrain_num_cols": xtrain.shape[1],
-            },
-        ),
-        Output(
-            xtest,
-            metadata={
-                "xtest_num_rows": xtest.shape[0],
-                "xtest_num_cols": xtest.shape[1],
-            },
-        ),
-        Output(
-            ytrain,
-            metadata={
-                "ytrain_num_rows": ytrain.shape[0],
-            },
-        ),
-        Output(
-            ytest,
-            metadata={
-                "ytest_num_rows": ytest.shape[0],
-            },
-        ),
-    )
-
-
-# define jobs for a subset of assets
+# Define three asset jobs using 'define_asset_job'.
+# 1. An Asset job, which materializes all assets.
+# 2. An Asset job, which materializes all assets of the 'datapreprocessing' group.
+# 3. An Asset job, which materializes only the 'duplicates' asset.
 all_assets_job = define_asset_job(name="all_assets_job")
-data_generation_job = define_asset_job(name="data_generation_job", selection="data")
+get_duplicates_job = define_asset_job(name="get_duplicates_job", selection="duplicates")
+data_generation_job = define_asset_job(
+    name="data_generation_job", selection=AssetSelection.groups("datapreprocessing")
+)
 
+# You will see, that the jobs are not listed in the dagster UI, yet.
+# Via dagsters 'Definitions', you can define which assets and jobs should be
+# visible in the dagster UI.
+# Make all assets and jobs available for the dagster UI.
 defs = Definitions(
     assets=[
-        data,
+        load_data,
         data_cleaned,
         data_deduplicated,
         duplicates,
         data_encoded,
         data_standardized,
-        split_data,
     ],
-    jobs=[all_assets_job, data_generation_job],
+    jobs=[all_assets_job, get_duplicates_job, data_generation_job],
 )
