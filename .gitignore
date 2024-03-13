@@ -12,3 +12,4 @@ __pycache__/
 tmp*
 
 notebooks/mlflow/data/
+data/genres_standardized.csv
