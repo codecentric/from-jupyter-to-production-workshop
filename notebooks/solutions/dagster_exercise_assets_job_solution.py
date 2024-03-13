@@ -1,3 +1,5 @@
+from typing import List
+
 import pandas as pd
 from dagster import asset, Config, Output, define_asset_job, Definitions, AssetSelection
 from pandas import DataFrame
@@ -74,25 +76,27 @@ def data_encoded(data_deduplicated: pd.DataFrame):
 # rows and the number of columns. You need to define the output as
 # a dagster.Output for this.
 # Additionally, track the standardized columns in as metadata parameters.
+
+
+class StandardizationConfig(Config):
+    columns_to_standardize: List[str] = ["duration_ms", "tempo"]
+
+
 @asset(description="Standardized Music Data", group_name="datapreprocessing")
-def data_standardized(data_encoded: pd.DataFrame):
+def data_standardized(data_encoded: pd.DataFrame, config: StandardizationConfig):
     pd.set_option("display.max_columns", 500)
     data_encoded.describe()
-    # TODO: define a Config to set which columns should be standardized
-    data_encoded["duration_ms"] = (
-        data_encoded["duration_ms"] - data_encoded["duration_ms"].min()
-    ) / (data_encoded["duration_ms"].max() - data_encoded["duration_ms"].min())
-    data_encoded["tempo"] = (data_encoded["tempo"] - data_encoded["tempo"].min()) / (
-        data_encoded["tempo"].max() - data_encoded["tempo"].min()
-    )
-    # TODO: define output as resource
+    for col in config.columns_to_standardize:
+        data_encoded[col] = (data_encoded[col] - data_encoded[col].min()) / (
+            data_encoded[col].max() - data_encoded[col].min()
+        )
     data_encoded.to_csv("data/genres_standardized.csv", sep=";", index=False)
     return Output(
         data_encoded,
         metadata={
             "num_rows": data_encoded.shape[0],
             "num_cols": data_encoded.shape[1],
-            "standardized_cols": ["duration_ms", "tempo"],
+            "standardized_cols": config.columns_to_standardize,
         },
     )
 
