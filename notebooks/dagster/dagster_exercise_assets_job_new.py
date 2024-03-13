@@ -104,7 +104,7 @@ def data_standardized(data_encoded: pd.DataFrame):
 # 1. An Asset job, which materializes all assets.
 # 2. An Asset job, which materializes all assets of the 'datapreprocessing' group.
 # 3. An Asset job, which materializes only the 'duplicates' asset.
-all_assets_job = define_asset_job(name="all_assets_job")
+get_all_assets_job = define_asset_job(name="get_all_assets_job")
 get_duplicates_job = define_asset_job(name="get_duplicates_job", selection="duplicates")
 data_generation_job = define_asset_job(
     name="data_generation_job", selection=AssetSelection.groups("datapreprocessing")
@@ -123,5 +123,5 @@ defs = Definitions(
         data_encoded,
         data_standardized,
     ],
-    jobs=[all_assets_job, get_duplicates_job, data_generation_job],
+    jobs=[get_all_assets_job, get_duplicates_job, data_generation_job],
 )
