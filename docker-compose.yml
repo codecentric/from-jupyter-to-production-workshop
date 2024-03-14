@@ -3,7 +3,6 @@ services:
   jupyter:
     image: codecentric/from-jupyter-to-production-jupyter:latest
     ports:
-      - 3000:3000
       - 8888:8888
       - 4141:4141
       - 7777:7777
@@ -20,5 +19,19 @@ services:
       - 5001:5001
     volumes:
       - workspace:/ml_data/mlruns
+  dagster:
+    image: codecentric/from-jupyter-to-production-dagster
+    ports:
+      - 3000:3000
+    entrypoint: "dagster dev  -h 0.0.0.0 -p 3000 -f ./scripts/dagster_uebung.py"
+
+    volumes:
+      - type: bind
+        source: ./notebooks/dagster/scripts/
+        target: /opt/dagster/app/scripts
+      - type: bind
+        source: ./notebooks/dagster/data/
+        target: /opt/dagster/app/data
+
 volumes:
   workspace:
