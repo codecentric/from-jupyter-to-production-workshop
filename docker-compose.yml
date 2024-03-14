@@ -11,6 +11,12 @@ services:
         source: ./notebooks
         target: /workshop/notebooks
       - workspace:/workshop/workspace
+      - type: bind
+        source: ./data
+        target: /workshop/notebooks/dagster/data
+      - type: bind
+        source: ./data
+        target: /workshop/notebooks/dvc/data
     links:
       - "mlflow:mlflow"
   mlflow:
@@ -23,14 +29,14 @@ services:
     image: codecentric/from-jupyter-to-production-dagster
     ports:
       - 3000:3000
-    entrypoint: "dagster dev  -h 0.0.0.0 -p 3000 -f ./scripts/dagster_uebung.py"
+    entrypoint: "dagster dev  -h 0.0.0.0 -p 3000 -f ./scripts/dagster_exercise_assets_job.py -f ./scripts/dagster_exercise_op_job.py"
 
     volumes:
       - type: bind
         source: ./notebooks/dagster/scripts/
         target: /opt/dagster/app/scripts
       - type: bind
-        source: ./notebooks/dagster/data/
+        source: ./data
         target: /opt/dagster/app/data
 
 volumes:
