@@ -12,10 +12,10 @@ services:
         target: /workshop/notebooks
       - workspace:/workshop/workspace
       - type: bind
-        source: ./data
+        source: ./data/dagster
         target: /workshop/notebooks/dagster/data
       - type: bind
-        source: ./data
+        source: ./data/dvc
         target: /workshop/notebooks/dvc/data
     links:
       - "mlflow:mlflow"
@@ -36,7 +36,7 @@ services:
         source: ./notebooks/dagster/scripts/
         target: /opt/dagster/app/scripts
       - type: bind
-        source: ./data
+        source: ./data/dagster
         target: /opt/dagster/app/data
 
 volumes:
