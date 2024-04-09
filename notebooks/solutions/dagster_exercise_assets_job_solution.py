@@ -15,8 +15,6 @@ class DataConfig(Config):
 # Add it to an asset group named 'Data Preprocessing'
 @asset(name="song_data", description="Input Music data", group_name="datapreprocessing")
 def load_data(config: DataConfig) -> DataFrame:
-    # TODO: test download from kaggle
-    # TODO: define as resource?
     return pd.read_csv(config.input_file)
 
 
