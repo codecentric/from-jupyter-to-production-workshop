@@ -51,7 +51,7 @@ mlflow.log_artifact("file_path_or_directory")
 ## 9. Modelle loggen
 Je nach ML-Framework gibt es andere Implementierungen.
 ```python
-mlflow.pytorch.log_model(model, "model")
+mlflow.sklearn.log_model(model, "model")
 ```
 
 ## 10. Datasets loggen
