@@ -12,4 +12,5 @@ __pycache__/
 tmp*
 
 notebooks/mlflow/data/
-data/genres_standardized.csv
+data/dagster/genres_standardized.csv
+notebooks/dagster/scripts
