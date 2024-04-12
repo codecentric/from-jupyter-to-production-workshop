@@ -14,3 +14,5 @@ tmp*
 notebooks/mlflow/data/
 data/dagster/genres_standardized.csv
 notebooks/dagster/scripts
+data/dagster/classification_report.csv
+data/dagster/confusion_materix.png
