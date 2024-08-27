@@ -18,6 +18,15 @@ services:
         source: ./data/dagster
         target: /workshop/notebooks/mlflow/data
       - type: bind
+        source: ./data/mlflow
+        target: /workshop/notebooks/mlflow/data/mlflow
+      - type: bind
+        source: ./data/dagster
+        target: /workshop/notebooks/solutions/data
+      - type: bind
+        source: ./data/mlflow
+        target: /workshop/notebooks/solutions/data/mlflow
+      - type: bind
         source: ./data/dvc
         target: /workshop/notebooks/dvc/data
     links:
@@ -27,7 +36,7 @@ services:
     ports:
       - 5001:5001
     volumes:
-      - workspace:/ml_data/mlruns
+      - workspace:/ml_data
   dagster:
     image: codecentric/from-jupyter-to-production-dagster
     ports:
