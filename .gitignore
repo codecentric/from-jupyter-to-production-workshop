@@ -11,10 +11,14 @@ __pycache__/
 .DS_Store
 tmp*
 
+# mlflow
 notebooks/mlflow/data/
+# dagster
 data/dagster/genres_standardized.csv
 notebooks/dagster/scripts
 data/dagster/classification_report.csv
 data/dagster/confusion_materix.png
+# onnx
+notebooks/onnx/model
 
 notebooks/.Trash-0/
