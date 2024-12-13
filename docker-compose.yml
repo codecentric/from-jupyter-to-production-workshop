@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   jupyter:
     image: codecentric/from-jupyter-to-production-jupyter:latest
@@ -50,6 +49,9 @@ services:
       - type: bind
         source: ./data/dagster
         target: /opt/dagster/app/data
+
+    # disable logging since the startup will (rightfully) complain about incorrect syntax
+    attach: false
 
 volumes:
   workspace:
