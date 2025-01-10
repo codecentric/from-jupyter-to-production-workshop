@@ -44,6 +44,8 @@ You will find the source for the docker images here:
 
 [http://github.com/codecentric/from-jupyter-to-production-baseimage](http://github.com/codecentric/from-jupyter-to-production-baseimage)
 
-### Data Sources
+## Extra Repositories
 
-https://archive.ics.uci.edu/ml/datasets/wine+quality
+We provide additional repositories for showcases that do not fit into the JupyterLab setup:
+
+- [http://github.com/codecentric/from-jupyter-to-production-monitoring](Monitoring Showcase (FastAPI + Evidently + Streamlit))
