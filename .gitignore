@@ -20,5 +20,6 @@ data/dagster/classification_report.csv
 data/dagster/confusion_materix.png
 # onnx
 notebooks/onnx/model/*.onnx
+notebooks/onnx/onnx_exercise.py
 
 notebooks/.Trash-0/
