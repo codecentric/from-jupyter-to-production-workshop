@@ -7,11 +7,16 @@ from pydantic import BaseModel
 api = FastAPI()
 
 # load the onnx model. for our demo purposes, the model may live in the global context.
-# for more advanced apis, it may be reasonable to move the model into a dependency
+# for more advanced apis, it may be reasonable to move the model into a dependency.
+# HINT: The onnx model is supposed to be served by an InferenceSession. Check out the
+# onnx_introduction.ipynb to find a use of this object.
 sess = rt.InferenceSession("model/loan_model.onnx")
 
 
 # define the features that our request expects
+# for this task, have a look at the onnx_introduction.ipynb to find the feature names.
+# remember that each feature needs to be annotated with its respective type.
+# in this task, it is either a float or a str feature
 class LoanFeatures(BaseModel):
     applicantincome: float
     coapplicantincome: float
@@ -48,7 +53,6 @@ class Prediction(BaseModel):
 @api.post("/predict")
 def post_predict(loan_features: LoanFeatures) -> list[Prediction]:
     # convert the request object into a dict of numpy arrays
-    # HINT: you can retrieve a dict with all features via loan_features.model_dump()
     ins = {k: np.array(v) for k, v in loan_features.model_dump().items()}
 
     # convert the feature dtypes into the same dtypes that the model expects
@@ -61,7 +65,9 @@ def post_predict(loan_features: LoanFeatures) -> list[Prediction]:
     # run the prediction
     labels, probabilities = sess.run(None, ins)
 
-    # create the response object
+    # create the response object.
+    # HINT: The type hint of this function's return value shows that we want to create a list of 
+    # `Prediction` objects
     predicted = []
     for k, v in probabilities[0].items():
         predicted.append(Prediction(label=k, probability=v))
