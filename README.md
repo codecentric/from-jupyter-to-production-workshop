@@ -48,4 +48,4 @@ You will find the source for the docker images here:
 
 We provide additional repositories for showcases that do not fit into the JupyterLab setup:
 
-- [http://github.com/codecentric/from-jupyter-to-production-monitoring](Monitoring Showcase (FastAPI + Evidently + Streamlit))
+- [Monitoring Showcase (FastAPI + Evidently + Streamlit)](http://github.com/codecentric/from-jupyter-to-production-monitoring)
