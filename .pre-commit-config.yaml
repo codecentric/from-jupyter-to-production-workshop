@@ -1,32 +1,28 @@
 repos:
-- repo: https://github.com/charliermarsh/ruff-pre-commit
-  rev: v0.15.5
-  hooks:
-    - id: ruff
-- repo: https://github.com/PyCQA/bandit
-  rev: 1.9.4
-  hooks:
-  - id: bandit
-    exclude: ^tests/
-- repo: https://github.com/psf/black
-  rev: 26.1.0
-  hooks:
-  - id: black
-- repo: https://github.com/Lucas-C/pre-commit-hooks-safety
-  rev: v1.4.2
-  hooks:
-  - id: python-safety-dependencies-check
-    args: ["--ignore=42194,43975,47833,44487,45356,43975,51668"]
-    files: pyproject.toml
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v6.0.0
-  hooks:
-  - id: check-yaml
-    types: [yaml]
-  - id: check-json
-    types: [json]
-  - id: check-toml
-    types: [toml]
-  - id: no-commit-to-branch
-    args: ["--branch", "main"]
-  - id: end-of-file-fixer
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.16.7
+    hooks:
+      - id: ruff
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.9.4
+    hooks:
+      - id: bandit
+        exclude: ^tests/
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.4.2
+    hooks:
+      - id: python-safety-dependencies-check
+        args: ["--ignore=42194,43975,47833,44487,45356,43975,51668"]
+        files: pyproject.toml
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-yaml
+        types: [yaml]
+      - id: check-json
+        types: [json]
+      - id: check-toml
+        types: [toml]
+      - id: no-commit-to-branch
+        args: ["--branch", "main"]
+      - id: end-of-file-fixer
