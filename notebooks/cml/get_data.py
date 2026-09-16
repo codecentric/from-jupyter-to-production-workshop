@@ -4,7 +4,6 @@ import numpy as np
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 
-
 seed = 42
 # generate data
 X, y = make_classification(n_samples = 1000, random_state=seed)

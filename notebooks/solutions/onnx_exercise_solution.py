@@ -1,8 +1,9 @@
+from typing import Literal
+
 import numpy as np
 import onnxruntime as rt
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import Literal
 
 # create the fastapi application
 api = FastAPI()

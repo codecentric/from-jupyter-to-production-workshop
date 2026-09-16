@@ -3,7 +3,6 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import plot_confusion_matrix
 
-
 # read in data
 X_train = np.genfromtxt("data/train_features.csv")
 y_train = np.genfromtxt("data/train_labels.csv")

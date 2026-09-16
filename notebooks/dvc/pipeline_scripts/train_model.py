@@ -1,12 +1,11 @@
 import sys
 
-import yaml
+import mlflow.sklearn
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+import yaml
 from sklearn.linear_model import ElasticNet
 from sklearn.pipeline import Pipeline
-
-import mlflow.sklearn
+from sklearn.preprocessing import StandardScaler
 
 PATH = 'data/'
 
