@@ -7,7 +7,10 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 import mlflow.sklearn
 
-PATH = 'data/'
+logging.basicConfig(level=logging.INFO)
+
+PATH = "data/"
+
 
 def evaluate_model(model_path: str, x_test_path: str, y_test_path: str):
     pipe = mlflow.sklearn.load_model(model_path)
@@ -23,11 +26,11 @@ def evaluate_model(model_path: str, x_test_path: str, y_test_path: str):
     logger = logging.getLogger(__name__)
     logger.info("Model has a coefficient R^2 of %.3f.", r2)
 
-    result = pd.DataFrame({"train": {"rmse": float(rmse),
-                                     "mae": float(mae),
-                                     "r2": float(r2)}})
+    result = pd.DataFrame(
+        {"train": {"rmse": float(rmse), "mae": float(mae), "r2": float(r2)}}
+    )
 
-    result.to_json(PATH + 'result.json')
+    result.to_json(PATH + "result.json")
 
 
 if __name__ == "__main__":
